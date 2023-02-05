@@ -1,0 +1,19 @@
+place 5,4,North
+move
+report
+place 2,4,North
+move
+left
+move
+report
+move
+left
+move
+report
+move 
+report
+move
+move
+move
+move
+report

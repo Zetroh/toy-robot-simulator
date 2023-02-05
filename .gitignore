@@ -1,0 +1,37 @@
+# Logs
+logs
+*.log
+
+# Coverage directory used by tools like istanbul (Used by Jest)
+coverage
+*.lcov
+
+# Dependency directories
+node_modules/
+
+# Build artifacts
+coverage
+tmp
+dist
+
+
+# Yarn artifacts
+yarn-debug.log*
+yarn-error.log*
+
+# testing
+/coverage
+
+# production
+/build
+/dist
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.env.local
+
+.idea
+
+.webpack
