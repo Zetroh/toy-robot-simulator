@@ -17,3 +17,10 @@ move
 move
 move
 report
+left
+report
+move
+move
+left
+move
+report

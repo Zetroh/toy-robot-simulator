@@ -20,18 +20,9 @@ export class Robot {
 
   place(position: Position, direction: Direction) {
     if (this.isOnTheTable()) return;
-    if (position.x > 4 || position.x < 0 || position.y > 4 || position.y < 0)
-      return;
+    if (!this.isMovementSafe(position.x, position.y)) return;
     this.position = position;
     this.direction = direction;
-  }
-
-  getPosition() {
-    return this.position;
-  }
-
-  getDirection() {
-    return this.direction;
   }
 
   left() {
@@ -44,70 +35,72 @@ export class Robot {
     this.direction = RightCommandMap[this.direction!];
   }
 
-  isPositionValid(): boolean {
-    return !!this.position && this.position.x !== undefined && this.position.x !== undefined;
-  }
-
-  isOnTheTable(): boolean {
-    return this.isPositionValid() && !!this.direction;
-  }
-
-  private isMovementSafe(): boolean {
-    if (!this.position) return false;
-    const xPosition = this.position.x + 1 < 5;
-    const yPosition = this.position.y + 1 < 5;
-    return xPosition && yPosition;
-  }
-
-  move() {
-    if (!this.isOnTheTable()) return;
-    //    if (!this.isMovementSafe()) return
-    console.log("dddddddddddddddddd", this.position, this.direction);
-    let newXPosition = this.position!.x;
-    let newYPosition = this.position!.y;
-
-    if (
-      this.direction === Direction.SOUTH ||
-      this.direction === Direction.NORTH
-    ) {
-      newYPosition =
-        this.direction === Direction.NORTH
-          ? this.position!.y + 1
-          : this.position!.y - 1;
-    }
-
-    if (
-      this.direction === Direction.WEST ||
-      this.direction === Direction.EAST
-    ) {
-      newXPosition =
-        this.direction === Direction.EAST
-          ? this.position!.x + 1
-          : this.position!.x - 1;
-    }
-
-    if (
-      newXPosition >= 0 &&
-      newXPosition < 5 &&
-      newYPosition >= 0 &&
-      newYPosition < 5
-    ) {
-      this.position = { x: newXPosition, y: newYPosition };
-    }
-  }
-
-  private isFacingNorthOrSouth() {
-    return (
-      this.direction === Direction.NORTH || this.direction === Direction.SOUTH
-    );
-  }
-
   report() {
     if (!this.isOnTheTable()) return;
     console.log(
       `Output: ${this.position!.x},${this.position!.y},${this.direction}`
     );
   }
-}
-export { Direction };
 
+  isPositionValid(): boolean {
+    return (
+      !!this.position &&
+      this.position.x !== undefined &&
+      this.position.x !== undefined
+    );
+  }
+
+  isOnTheTable(): boolean {
+    return this.isPositionValid() && !!this.direction;
+  }
+
+  private isMovementSafe(xPosition: number, yPosition: number): boolean {
+    return xPosition >= 0 && xPosition < 5 && yPosition >= 0 && yPosition < 5;
+  }
+
+  move() {
+    if (!this.isOnTheTable()) return;
+    let newXPosition = this.getNewXPosition();
+    let newYPosition = this.getNewYPosition();
+
+    if (this.isMovementSafe(newXPosition, newYPosition)) {
+      this.position = { x: newXPosition, y: newYPosition };
+    }
+  }
+
+  private getNewYPosition(): number {
+    if (this.isFacingNorth()) return this.position!.y + 1;
+    if (this.isFacingSouth()) return this.position!.y - 1;
+    return this.position!.y;
+  }
+
+  private getNewXPosition(): number {
+    if (this.isFacingEast()) return this.position!.x + 1;
+    if (this.isFacingWest()) return this.position!.x - 1;
+    return this.position!.x;
+  }
+
+  private isFacingNorth() {
+    return this.direction === Direction.NORTH;
+  }
+
+  private isFacingSouth() {
+    return this.direction === Direction.SOUTH;
+  }
+
+  private isFacingWest() {
+    return this.direction === Direction.WEST;
+  }
+
+  private isFacingEast() {
+    return this.direction === Direction.EAST;
+  }
+
+  getPosition() {
+    return this.position;
+  }
+
+  getDirection() {
+    return this.direction;
+  }
+}
