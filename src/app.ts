@@ -30,13 +30,13 @@ const runSimulator = () => {
       if (!robot.isOnTheTable()) {
         const placeItems = formattedLine.split(" ");
         if (placeItems.length !== 2)
-          logInputError("command name or position not from from input");
+          logInputError("command name or position was not found in the input");
 
         const placeCommand = placeItems[0];
         const placeDetails = placeItems[1].split(",");
         if (placeDetails.length !== 3)
           logInputError(
-            "command name or position or direction not from from input"
+            "command name, position or direction was not found in the input"
           );
 
         const x = Number(placeDetails[0]);
@@ -44,7 +44,7 @@ const runSimulator = () => {
         const direction = (<any>Direction)[placeDetails[2]];
 
         if (!isPositionValid(x, y) || !direction)
-          logInputError("No valid direction, x or y position from the input");
+          logInputError("No valid direction, X position or Y position was found in the input");
 
         CommandMap[placeCommand]?.call(robot, { x, y }, direction);
       } else {
